@@ -86,8 +86,17 @@ WSGI_APPLICATION = 'HMS_api.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME':  'hmsapi',
+        # Replace username with your desired user name
+        'USER': 'postgres',
+        # Replace password with your desired password
+        'PASSWORD': 'olawumi2013',
+        # Replace 127.0.0.1 with the PostgreSQL host
+        'HOST': '127.0.0.1',
+        # Replace 5432 with the PostgreSQL configured port
+        # in case you aren't using the default port
+        'PORT': '5432',
     }
 }
 

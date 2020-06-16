@@ -34,8 +34,11 @@ class Room(models.Model):
     status = models.CharField(choices=ROOM_STATUS, max_length=10, blank=False, default="U"),
     condition = models.CharField(choices=ROOM_CONDITION, max_length=10, blank=False, default="G"),
 
+    """
+    
     class Meta:
-        ordering = ("number",)
+        ordering = ('number',)
+    """
 
     def __str__(self):
         return self.number
@@ -47,8 +50,10 @@ class Customer(models.Model):
     phone_number = models.DecimalField(max_digits=11, decimal_places=0, blank=False),
     email_address = models.EmailField(blank=True),
 
+    """
     class Meta:
-        ordering = ("fullname",)
+        ordering = ('fullname_id',)
+    """
 
     def __str__(self):
         return self.fullname
@@ -61,10 +66,10 @@ class Invoices(models.Model):
     amount = models.DecimalField(max_digits=10, decimal_places=2, blank=False),
 
     """ Arranges the Invoices in deceasing order of date
-        
-    """
+   
     class Meta:
-        ordering = ("-date-issued",)
+        ordering = ('-date-issued',)
+    """
 
     def __str__(self):
         return self.amount
