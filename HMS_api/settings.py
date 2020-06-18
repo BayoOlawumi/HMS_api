@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'HMS_api.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME':  'hmsapi',
+        'NAME':  'hms',
         # Replace username with your desired user name
         'USER': 'postgres',
         # Replace password with your desired password
