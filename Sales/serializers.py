@@ -1,21 +1,26 @@
-from rest_framework import serializers
+from rest_framework.serializers import (
+    ModelSerializer,
+    HyperlinkedIdentityField,
+)
 from .models import Product, Category
-
-
 
 """This is the serializer for Category Table
     
 """
 
 
-class CategorySerializer(serializers.ModelSerializer):
+class ProductCategorySerializer(ModelSerializer):
+    """url = HyperlinkedIdentityField(
+        view_name='sales:cat-list',
+        )
+    """
     class Meta:
         model = Category
         fields = (
-                    'id',
-                    'name',
-                    'unique_color'
-                )
+            'id',
+            'name',
+            'unique_color'
+        )
 
 
 """ Serializer for Product category
@@ -24,7 +29,7 @@ class CategorySerializer(serializers.ModelSerializer):
 """
 
 
-class ProductSerializer(serializers.ModelSerializer):
+class ProductSerializer(ModelSerializer):
     class Meta:
         model = Product
         fields = ('id',

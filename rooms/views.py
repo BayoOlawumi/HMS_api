@@ -10,6 +10,10 @@ from .serializers import RoomSerializer
 from .serializers import RoomCategorySerializer, RoomCategoryUpdateSerializer, RoomCategoryCreateSerializer
 from .serializers import CustomerSerializer
 from .serializers import InvoiceSerializer
+from rest_framework.filters import (
+    SearchFilter,
+    OrderingFilter,
+    )
 
 
 # Create your views here.
@@ -17,7 +21,10 @@ from .serializers import InvoiceSerializer
 class RoomCategoryList(generics.ListCreateAPIView):
     queryset = RoomCategory.objects.all()
     serializer_class = RoomCategorySerializer
+    filter_backends = [SearchFilter, OrderingFilter]
+    search_fields= ['name','unique_color']
     name = 'roomcategory-list'
+
 
 
 # PUT
