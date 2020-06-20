@@ -40,21 +40,20 @@ class ProductCategoryList(ListCreateAPIView):
     pagination_class = ProductCategoryPagePagination
 
     # Altering some of the model field in the hardcore way from here
-    def perform_create(self, serializer):
-        serializer.save(unique_color="WE WIN")
+    #def perform_create(self, serializer):
+        #serializer.save(unique_color="WE WIN")
 
 
 class ProductUpdateDelete(RetrieveUpdateDestroyAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
-    name = 'alter-product'
+    name = 'product-detail'
 
 
 class ProductCategoryUpdateDelete(RetrieveUpdateDestroyAPIView):
     queryset = Category.objects.all()
     serializer_class = ProductCategorySerializer
-    name = 'alter-category'
-    lookup_field = 'name'
+    name = 'category-detail'
 
 
 """ index view to the Sales API

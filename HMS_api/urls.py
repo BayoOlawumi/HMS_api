@@ -20,6 +20,6 @@ urlpatterns = [
     url('admin/', admin.site.urls),
     url(r'^profile/', include('profile_api.urls')),
     url(r'^room/',include('room_management.urls')),
-    url(r'^sales/',include('Sales.urls', namespace='sales')),
+    url(r'^sales/',include('Sales.urls')),
     url(r'^rooms/',include('rooms.urls')),
 ]
