@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from rest_framework.reverse import reverse
 from rest_framework import status
 from django.db.models import Q
 from .pagination import (
@@ -16,7 +17,7 @@ from rest_framework.response import Response
 from .serializers import ProductSerializer, ProductCategorySerializer
 from rest_framework.views import APIView
 from rest_framework.decorators import api_view
-from rest_framework.generics import RetrieveUpdateDestroyAPIView, ListCreateAPIView
+from rest_framework.generics import GenericAPIView, RetrieveUpdateDestroyAPIView, ListCreateAPIView
 
 
 # Create your views here.
@@ -28,7 +29,6 @@ class ProductList(ListCreateAPIView):
 
 
 class ProductCategoryList(ListCreateAPIView):
-
     queryset = Category.objects.all()
     serializer_class = ProductCategorySerializer
     name = 'product-category-list'
@@ -40,8 +40,8 @@ class ProductCategoryList(ListCreateAPIView):
     pagination_class = ProductCategoryPagePagination
 
     # Altering some of the model field in the hardcore way from here
-    #def perform_create(self, serializer):
-        #serializer.save(unique_color="WE WIN")
+    # def perform_create(self, serializer):
+    # serializer.save(unique_color="WE WIN")
 
 
 class ProductUpdateDelete(RetrieveUpdateDestroyAPIView):
@@ -56,9 +56,22 @@ class ProductCategoryUpdateDelete(RetrieveUpdateDestroyAPIView):
     name = 'category-detail'
 
 
-""" index view to the Sales API
+class ApiRoot(GenericAPIView):
+    name = 'api-root'
 
-This shows the list of all Sales made
+    def get(self, request, *args, **kwargs):
+        return Response(
+            {
+                'products-categories': reverse(ProductCategoryList.name, request=request),
+                'products': reverse(ProductList.name, request=request),
+
+            }
+        )
+
+
+""" index view to the sales API
+
+This shows the list of all sales made
 Did not use JSONResponse to allow us work with other 
 data that are not necessarily JSON 
 

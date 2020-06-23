@@ -4,6 +4,7 @@ from .views import (
     ProductCategoryList,
     ProductUpdateDelete,
     ProductCategoryUpdateDelete,
+    ApiRoot,
 )
 
 """The URL that handles connects the views with the pages
@@ -11,6 +12,8 @@ from .views import (
 """
 
 urlpatterns = [
+    url(r'^$', ApiRoot.as_view(), name = ApiRoot.name),
+
     url(r'^products/$', ProductList.as_view(), name = ProductList.name),
     url(r'^product/(?P<pk>[0-9]+)/$', ProductUpdateDelete.as_view(), name=ProductUpdateDelete.name),
 

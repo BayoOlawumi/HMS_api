@@ -14,9 +14,6 @@ from .models import Product, Category
 """
 
 
-
-
-
 class ProductCategorySerializer(HyperlinkedModelSerializer):
     products = HyperlinkedRelatedField(
         view_name='product-category-list',
@@ -25,6 +22,7 @@ class ProductCategorySerializer(HyperlinkedModelSerializer):
 
     )
     num_unique_color = SerializerMethodField()
+
     class Meta:
         model = Category
         fields = (
@@ -37,7 +35,8 @@ class ProductCategorySerializer(HyperlinkedModelSerializer):
         )
 
     def get_num_unique_color(self, obj):
-        return int(re.findall(r'\d+',obj.unique_color)[0])
+        return int(re.findall(r'\d+', obj.unique_color)[0])
+
 
 """ Serializer for Product category
 
@@ -46,7 +45,8 @@ class ProductCategorySerializer(HyperlinkedModelSerializer):
 
 
 class ProductSerializer(HyperlinkedModelSerializer):
-    category=SlugRelatedField(slug_field='name', queryset=Category.objects.all())
+    category = SlugRelatedField(slug_field='name', queryset=Category.objects.all())
+
     class Meta:
         model = Product
         fields = ('id',

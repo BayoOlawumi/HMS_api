@@ -44,7 +44,7 @@ INSTALLED_APPS = [
     #Peromal Project
     'room_management.apps.RoomManagementConfig',
     'profile_api.apps.ProfileApiConfig',
-    'Sales.apps.SalesConfig',
+    'sales.apps.SalesConfig',
     'rooms.apps.RoomsConfig',
 
 
