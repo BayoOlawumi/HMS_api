@@ -2,6 +2,8 @@ from django.shortcuts import render
 from rest_framework import generics
 from rest_framework.response import Response
 from rest_framework.reverse import reverse
+
+from profile_api.models import UserProfile
 from .models import Room
 from .models import RoomCategory
 from .models import Customer
@@ -31,7 +33,7 @@ class RoomCategoryList(generics.ListCreateAPIView):
 class RoomCategoryUpdate(generics.RetrieveUpdateAPIView):
     queryset = RoomCategory.objects.all()
     serializer_class = RoomCategoryUpdateSerializer
-    name = 'roomcategory-list-update'
+    name = 'roomcategory-update'
 
 
 # POST
@@ -54,6 +56,9 @@ class RoomList(generics.ListCreateAPIView):
     serializer_class = RoomSerializer
     name = 'room-list'
 
+    def perform_create(self, serializer):
+        serializer.save(creator= UserProfile.objects.first())
+
 
 # GET, PUT, PATCH, DELETE, and OPTIONS
 class RoomDetail(generics.RetrieveUpdateDestroyAPIView):
@@ -73,7 +78,7 @@ class CustomerList(generics.ListCreateAPIView):
 class CustomerDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Customer.objects.all()
     serializer_class = CustomerSerializer
-    name = 'customer-details'
+    name = 'customer-detail'
 
 
 # GET, POST, and OPTIONS
@@ -87,7 +92,7 @@ class InvoiceList(generics.ListCreateAPIView):
 class InvoiceDetail(generics.RetrieveUpdateDestroyAPIView):
     queryset = Invoice.objects.all()
     serializer_class = InvoiceSerializer
-    name = 'invoice-details'
+    name = 'invoice-detail'
 
 
 class ApiRoot(generics.GenericAPIView):

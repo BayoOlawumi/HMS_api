@@ -25,6 +25,7 @@ from rest_framework.generics import GenericAPIView, RetrieveUpdateDestroyAPIView
 class ProductList(ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    pagination_class = ProductCategoryListOffsetPagination
     name = 'product-list'
 
 

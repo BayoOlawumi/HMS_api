@@ -42,7 +42,7 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
 
     #Peromal Project
-    'room_management.apps.RoomManagementConfig',
+
     'profile_api.apps.ProfileApiConfig',
     'sales.apps.SalesConfig',
     'rooms.apps.RoomsConfig',

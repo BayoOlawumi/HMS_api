@@ -7,21 +7,30 @@ from .models import Invoice
 '''Room Category Serializers'''
 
 
-class RoomCategorySerializer(serializers.ModelSerializer):
+class RoomCategorySerializer(serializers.HyperlinkedModelSerializer):
     # Displays all the rooms in the category
-    '''rooms = serializers.HyperlinkedRelatedField(
+    """rooms = serializers.HyperlinkedRelatedField(
         # rooms is the name used for the related field while creating the mode room
         many=True,
         read_only=True,
-        view_name='room-category'
-    )'''
+        view_name='room-detail',
+    )
+    """
+    rooms = serializers.SlugRelatedField(
+        # rooms is the name used for the related field while creating the mode room
+        many=True,
+        read_only=True,
+        slug_field='number',
+    )
 
     class Meta:
         model = RoomCategory
         fields = (
             'pk',
+            'url',
             'name',
-            'unique_color'
+            'unique_color',
+            'rooms',
         )
 
 
@@ -33,11 +42,13 @@ class RoomCategoryUpdateSerializer(serializers.ModelSerializer):
             'unique_color',
         )
 
+
 class RoomCategoryCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = RoomCategory
         fields = (
             'name',
+            'unique_color',
         )
 
 
@@ -46,16 +57,17 @@ class RoomCategoryCreateSerializer(serializers.ModelSerializer):
 
 class RoomSerializer(serializers.ModelSerializer):
     # Displays the category of the Room
-    room_category = serializers.SlugRelatedField(slug_field='name', queryset=RoomCategory.objects.all())
+    category = serializers.SlugRelatedField(slug_field='name', queryset=RoomCategory.objects.all())
+    creator = serializers.ReadOnlyField(source='creator.name')
 
     class Meta:
         model = Room
         fields = (
-            'url',
-            'room_category',
             'number',
+            'category',
             'status',
             'condition',
+            'creator',
         )
 
 
@@ -65,19 +77,18 @@ class RoomSerializer(serializers.ModelSerializer):
 class CustomerSerializer(serializers.HyperlinkedModelSerializer):
     invoices = serializers.HyperlinkedRelatedField(
         many=True,
+        view_name='invoice-detail',
         read_only=True,
-        view_name="customer-invoices"
     )
 
     class Meta:
         model = Customer
         fields = (
-            'url',
             'fullname',
             'address',
             'phone_number',
             'email_address',
-            'invoices'
+            'invoices',
         )
 
 
@@ -86,15 +97,17 @@ class CustomerSerializer(serializers.HyperlinkedModelSerializer):
 
 class InvoiceSerializer(serializers.HyperlinkedModelSerializer):
     # Displays the Customer with the Invoice
-    customer = serializers.SlugRelatedField(queryset=Customer.objects.all(), slug_field='fullname')
-    # Displays the Room with the Invoice
-    room = serializers.SlugRelatedField(queryset=Room.objects.all(), slug_field='status')
+    customer = serializers.HyperlinkedRelatedField(many=False, view_name='customer-detail', read_only=True)
+    # Displays the Room with the Invoice, showing only the number
+    # room = serializers.SlugRelatedField(queryset=Room.objects.all(), slug_field='number')
+
+    # Display all the details for the related drone
+    room = RoomSerializer()
 
     class Meta:
         model = Invoice
         fields = (
             'url',
-            'pk',
             'date_issued',
             'amount',
             'details',

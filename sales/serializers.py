@@ -16,7 +16,7 @@ from .models import Product, Category
 
 class ProductCategorySerializer(HyperlinkedModelSerializer):
     products = HyperlinkedRelatedField(
-        view_name='product-category-list',
+        view_name='product-detail',
         many=True,
         read_only=True,
 
@@ -57,3 +57,4 @@ class ProductSerializer(HyperlinkedModelSerializer):
                   'no_available',
                   'no_of_intake'
                   )
+

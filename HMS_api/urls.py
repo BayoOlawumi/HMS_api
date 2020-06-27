@@ -19,7 +19,6 @@ from django.contrib import admin
 urlpatterns = [
     url('admin/', admin.site.urls),
     url(r'^profile/', include('profile_api.urls')),
-    url(r'^room/',include('room_management.urls')),
     url(r'^sales/',include('sales.urls')),
     url(r'^rooms/',include('rooms.urls')),
 ]

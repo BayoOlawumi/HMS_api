@@ -2,17 +2,12 @@ from django.db import models
 
 
 # Create your models here.
+from HMS_api import settings
+
 
 class RoomCategory(models.Model):
-    default_color = "#4354545"
-    name = models.CharField(max_length=20, blank=False)
-    unique_color = models.CharField(max_length=30, default=default_color, blank=False)
-
-    """
-    class Meta:
-        ordering = ("name",)
-        
-    """
+    name = models.CharField(max_length=20, blank=False, unique=True)
+    unique_color = models.CharField(max_length=30, blank=False)
 
     def __str__(self):
         return self.name
@@ -25,28 +20,12 @@ class RoomCategory(models.Model):
 
 
 class Room(models.Model):
-    ROOM_STATUS = (
-        ("O", "Occupied"),
-        ("U", "Unoccupied"),
-        ("B", "Booked"),
-    )
-    ROOM_CONDITION = (
-        ("G", "Good"),
-        ("B", "Bad"),
-        ("E", "Excellent"),
-    )
-
-    room_category = models.ForeignKey(RoomCategory, on_delete=models.CASCADE, related_name='rooms')
+    category = models.ForeignKey(RoomCategory, on_delete=models.CASCADE, related_name='rooms')
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='rooms_created', on_delete=models.CASCADE)
     # Whenever, the RoomCategory is deleted, all the Rooms associated with it gets deleted, Hence,CASCADE
-    number = models.DecimalField(max_digits=9, decimal_places=0, blank=False, null=True)
-    status = models.CharField(choices=ROOM_STATUS, max_length=10, blank=False, default="U"),
-    condition = models.CharField(choices=ROOM_CONDITION, max_length=10, blank=False, default="G"),
-
-    """
-    
-    class Meta:
-        ordering = ('number',)
-    """
+    number = models.DecimalField(max_digits=9, decimal_places=0, blank=False, unique=True)
+    status = models.CharField(max_length=30, blank=False)
+    condition = models.CharField(max_length=30, blank=False)
 
     def __str__(self):
         return str(self.number)
@@ -58,18 +37,14 @@ class Room(models.Model):
 
 
 class Customer(models.Model):
-    fullname = models.CharField(max_length=60, blank=False),
-    address = models.CharField(max_length=200, blank=True),
-    phone_number = models.DecimalField(max_digits=11, decimal_places=0, blank=False),
-    email_address = models.EmailField(blank=True),
+    fullname = models.CharField(max_length=60, blank=False)
+    address = models.CharField(max_length=200, blank=False)
+    phone_number = models.DecimalField(max_digits=11, decimal_places=0, blank=False)
+    email_address = models.EmailField(blank=False, unique=True)
 
-    """
-    class Meta:
-        ordering = ('fullname_id',)
-    """
 
     def __str__(self):
-        return self.fullname
+        return str(self.fullname)
 
 
 '''Invoice has many to one relationship with Customer and room
@@ -82,9 +57,9 @@ class Invoice(models.Model):
     # for every invoice, there is a room, one room to plenty invoices
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name='invoices')
     # for every customer,there is a customer,one customer to one or manny invoices
-    date_issued = models.DateTimeField(auto_now_add=True),
-    amount = models.DecimalField(max_digits=10, decimal_places=2, blank=False),
-    details = models.CharField(max_length=150, blank=True)
+    date_issued = models.DateTimeField(auto_now_add=True, blank=False)
+    amount = models.DecimalField(max_digits=10, decimal_places=2, blank=False)
+    details = models.CharField(max_length=150, blank=False)
 
     """ Arranges the Invoices in deceasing order of date
    
@@ -93,4 +68,4 @@ class Invoice(models.Model):
     """
 
     def __str__(self):
-        return str(self.amount)
+        return self.details

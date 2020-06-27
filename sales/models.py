@@ -9,7 +9,7 @@ from django.db import models
 
 class Category(models.Model):
     name = models.CharField(blank=False, max_length=50)
-    unique_color = models.CharField(blank=True, max_length=15)
+    unique_color = models.CharField(blank=False, max_length=15)
 
     def __str__(self):
         return self.name
@@ -26,6 +26,7 @@ class Product(models.Model):
     price = models.DecimalField(max_digits=9, decimal_places=2, blank=False)
     no_available = models.DecimalField(max_digits=10, decimal_places=0, blank=False)
     no_of_intake = models.DecimalField(max_digits=10, decimal_places=0, blank=False)
+
 
     def __str__(self):
         return self.name
