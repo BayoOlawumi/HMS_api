@@ -16,9 +16,9 @@ Including another URLconf
 from django.conf.urls import url,include
 from django.contrib import admin
 
-urlpatterns = [
+urlpatterns = {
     url('admin/', admin.site.urls),
     url(r'^profile/', include('profile_api.urls')),
-    url(r'^sales/',include('sales.urls')),
-    url(r'^rooms/',include('rooms.urls')),
-]
+    url(r'^sales/', include('sales.urls')),
+    url(r'^rooms/', include('rooms.urls')),
+}
